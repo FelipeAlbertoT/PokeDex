@@ -13,6 +13,12 @@ struct System {
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = true
     }
+    
+    static func clearTabBar(forBar tabBar: UITabBar) {
+        tabBar.backgroundImage = UIImage()
+        tabBar.shadowImage = UIImage()
+        tabBar.isTranslucent = true
+    }
 }
 
 class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UITableViewDelegate, UITableViewDataSource {
@@ -33,19 +39,16 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
-//        self.navigationController?.navigationBar.prefersLargeTitles = true
-//        UINavigationBar.appearance().largeTitleTextAttributes =
-//            [NSAttributedString.Key.foregroundColor:UIColor.blue,
-//             NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 22)]
-//
-//        let search = UISearchController(searchResultsController: nil)
-//        search.searchResultsUpdater = self
-//        self.navigationItem.searchController = search
+        self.title = "Poke"
 
         if let navController = navigationController {
             System.clearNavigationBar(forBar: navController.navigationBar)
             navController.view.backgroundColor = .clear
+        }
+        
+        if let tabController = tabBarController {
+            System.clearTabBar(forBar: tabController.tabBar)
+            tabController.view.backgroundColor = .clear
         }
         
         
