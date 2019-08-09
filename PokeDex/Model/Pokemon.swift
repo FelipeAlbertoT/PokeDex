@@ -8,17 +8,25 @@
 
 import Foundation
 
-class Pokemon: NSObject {
+class Pokemon: NSObject, Codable {
     
     let id: Int
     let name: String
-    let sprite: String
+    let sprites: PokemonSprites
     let types: [PokemonType]
     
-    init(id: Int, name: String, sprite: String, types: [PokemonType]) {
+//    private enum CodingKeys: String, CodingKey {
+//        case id
+//        case name
+//        case sprites
+//        case types
+//
+//    }
+    
+    init(id: Int, name: String, sprites: PokemonSprites, types: [PokemonType]) {
         self.id = id
         self.name = name
-        self.sprite = sprite
+        self.sprites = sprites
         self.types = types
     }
     

@@ -15,6 +15,10 @@
 		C10D70D022F7C3E8002FDBDA /* Pokemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70CF22F7C3E8002FDBDA /* Pokemon.swift */; };
 		C10D70D222F7C4C6002FDBDA /* PokemonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70D122F7C4C6002FDBDA /* PokemonType.swift */; };
 		C10D70D422F7C8FC002FDBDA /* PokemonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70D322F7C8FC002FDBDA /* PokemonTableViewCell.swift */; };
+		C10D70E322F8B459002FDBDA /* PokemonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70E222F8B459002FDBDA /* PokemonService.swift */; };
+		C10D70E522FDCC51002FDBDA /* NamedAPIResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70E422FDCC50002FDBDA /* NamedAPIResource.swift */; };
+		C10D70E722FDCF31002FDBDA /* PagedPokemons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70E622FDCF31002FDBDA /* PagedPokemons.swift */; };
+		C10D70E922FDD3E2002FDBDA /* PokemonSprites.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70E822FDD3E2002FDBDA /* PokemonSprites.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +32,10 @@
 		C10D70CF22F7C3E8002FDBDA /* Pokemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pokemon.swift; sourceTree = "<group>"; };
 		C10D70D122F7C4C6002FDBDA /* PokemonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonType.swift; sourceTree = "<group>"; };
 		C10D70D322F7C8FC002FDBDA /* PokemonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonTableViewCell.swift; sourceTree = "<group>"; };
+		C10D70E222F8B459002FDBDA /* PokemonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonService.swift; sourceTree = "<group>"; };
+		C10D70E422FDCC50002FDBDA /* NamedAPIResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedAPIResource.swift; sourceTree = "<group>"; };
+		C10D70E622FDCF31002FDBDA /* PagedPokemons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedPokemons.swift; sourceTree = "<group>"; };
+		C10D70E822FDD3E2002FDBDA /* PokemonSprites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonSprites.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +68,7 @@
 		C10D70B822F7B731002FDBDA /* PokeDex */ = {
 			isa = PBXGroup;
 			children = (
+				C10D70D522F8AD1D002FDBDA /* Networking */,
 				C10D70CE22F7C3D9002FDBDA /* Model */,
 				C10D70CD22F7B7D2002FDBDA /* PokemonsView */,
 				C10D70B922F7B731002FDBDA /* AppDelegate.swift */,
@@ -85,8 +94,19 @@
 			children = (
 				C10D70CF22F7C3E8002FDBDA /* Pokemon.swift */,
 				C10D70D122F7C4C6002FDBDA /* PokemonType.swift */,
+				C10D70E422FDCC50002FDBDA /* NamedAPIResource.swift */,
+				C10D70E622FDCF31002FDBDA /* PagedPokemons.swift */,
+				C10D70E822FDD3E2002FDBDA /* PokemonSprites.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		C10D70D522F8AD1D002FDBDA /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				C10D70E222F8B459002FDBDA /* PokemonService.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,8 +183,12 @@
 				C10D70CC22F7B7CB002FDBDA /* PokemonTableViewController.swift in Sources */,
 				C10D70BA22F7B731002FDBDA /* AppDelegate.swift in Sources */,
 				C10D70D022F7C3E8002FDBDA /* Pokemon.swift in Sources */,
+				C10D70E722FDCF31002FDBDA /* PagedPokemons.swift in Sources */,
 				C10D70D422F7C8FC002FDBDA /* PokemonTableViewCell.swift in Sources */,
+				C10D70E522FDCC51002FDBDA /* NamedAPIResource.swift in Sources */,
 				C10D70D222F7C4C6002FDBDA /* PokemonType.swift in Sources */,
+				C10D70E322F8B459002FDBDA /* PokemonService.swift in Sources */,
+				C10D70E922FDD3E2002FDBDA /* PokemonSprites.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +337,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9SUT8PZRGB;
 				INFOPLIST_FILE = PokeDex/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -331,6 +356,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9SUT8PZRGB;
 				INFOPLIST_FILE = PokeDex/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

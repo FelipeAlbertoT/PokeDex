@@ -28,17 +28,40 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
     
     @IBOutlet var tableView: UITableView!
     
-    var pokemons = [Pokemon]()
+    var pokemons = [NamedAPIResource]()
+    var pagedPokemons: PagedPokemon?
+    let endpoint = "https://pokeapi.co"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // dados mockados
-        pokemons.append(Pokemon(id: 1, name: "bulbasaur", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png", types: [PokemonType(name:  "poison"), PokemonType(name: "grass")]))
-        pokemons.append(Pokemon(id: 2, name: "ivysaur", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png", types: [PokemonType(name:  "poison"), PokemonType(name: "grass")]))
-        
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        // dados mockados
+//        pokemons.append(Pokemon(id: 1, name: "bulbasaur", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png", types: [PokemonType(name:  "poison"), PokemonType(name: "grass")]))
+//        pokemons.append(Pokemon(id: 2, name: "ivysaur", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png", types: [PokemonType(name:  "poison"), PokemonType(name: "grass")]))
+        
+        DispatchQueue.global(qos: .utility).async {
+            if let url = URL(string: "\(self.endpoint)/api/v2/pokemon/") {
+                URLSession.shared.dataTask(with: url) { (data, res, err) in
+                    let jsonDecoder = JSONDecoder()
+                    if let data = data {
+                        do {
+                            self.pagedPokemons = try jsonDecoder.decode(PagedPokemon.self, from: data)
+                            self.pokemons = self.pagedPokemons!.results
+                            DispatchQueue.main.async {
+                                self.tableView.reloadData()
+                            }
+                        } catch {
+                            print("Failed to load Pokemons")
+                        }
+                    }
+                }.resume()
+            }
+        }
+        
+        
         self.title = "Poke"
 
         if let navController = navigationController {
@@ -67,7 +90,7 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
         
         let pokemon = pokemons[indexPath.row]
         
-        cell.setup(pokemon: pokemon)
+        cell.setup(namedAPIResource: pokemon)
         
         return cell
     }

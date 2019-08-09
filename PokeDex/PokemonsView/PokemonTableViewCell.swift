@@ -10,7 +10,7 @@ import UIKit
 
 class PokemonTableViewCell: UITableViewCell {
 
-    let pokemon: Pokemon? = nil
+    var pokemon: Pokemon? = nil
     
     @IBOutlet var pokemonImage: UIImageView!
     @IBOutlet var name: UILabel!
@@ -23,22 +23,66 @@ class PokemonTableViewCell: UITableViewCell {
         // Initialization code
     }
     
-    func setup(pokemon: Pokemon) {
-        self.name.text = pokemon.name
-        self.id.text = String(format: "#%03d", pokemon.id)
+    func setup(namedAPIResource: NamedAPIResource) {
+        self.name.text = namedAPIResource.name
         
-        let url = URL(string: pokemon.sprite)
-        let data = try? Data(contentsOf: url!)
-        self.pokemonImage.image = UIImage(data: data!)
-        
-        for (index, type) in pokemon.types.enumerated() {
-            let typeImage = UIImage(named: type.name.capitalized)
-            if index == 0 {
-                type1.image = typeImage
-            } else {
-                type2.image = typeImage
-            }
+        DispatchQueue.global().async {
+            URLSession.shared.dataTask(with: namedAPIResource.url) { (data, res, err) in
+                let jsonDecoder = JSONDecoder()
+                if let data = data {
+                    do {
+                        self.pokemon = try jsonDecoder.decode(Pokemon.self, from: data)
+                        
+                        if let pokemon = self.pokemon {
+                            DispatchQueue.main.async {
+                                self.id.text = String(format: "#%03d", pokemon.id)
+                            
+                                do{
+                                    let data = try Data(contentsOf: pokemon.sprites.frontDefault)
+                                    self.pokemonImage.image = UIImage(data: data)
+                                } catch {
+                                    print("Falha ao carregar a imagem do pokemon")
+                                }
+                    
+                                for (index, type) in pokemon.types.enumerated() {
+                                    let typeImage = UIImage(named: type.name.capitalized)
+                                    if index == 0 {
+                                        self.type1.image = typeImage
+                                        self.type2.image = UIImage()
+                                    } else {
+                                        self.type2.image = typeImage
+                                    }
+                                }
+                            }
+                        }
+                        
+//                        DispatchQueue.main.async {
+//                            self.tableView.reloadData()
+//                        }
+                    } catch {
+                        print("Failed to load Pokemons")
+                    }
+                }
+            }.resume()
         }
+//        self.id.text = String(format: "#%03d", pokemon.id)
+        
+//        let url = URL(string: pokemon.sprite)
+//        do{
+//            let data = try Data(contentsOf: url!)
+//            self.pokemonImage.image = UIImage(data: data)
+//        } catch {
+//            print("Falha ao carregar a imagem do pokemon")
+//        }
+    
+//        for (index, type) in pokemon.types.enumerated() {
+//            let typeImage = UIImage(named: type.name.capitalized)
+//            if index == 0 {
+//                type1.image = typeImage
+//            } else {
+//                type2.image = typeImage
+//            }
+//        }
     }
     
 }
