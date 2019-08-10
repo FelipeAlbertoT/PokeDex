@@ -19,6 +19,7 @@
 		C10D70E522FDCC51002FDBDA /* NamedAPIResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70E422FDCC50002FDBDA /* NamedAPIResource.swift */; };
 		C10D70E722FDCF31002FDBDA /* PagedPokemons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70E622FDCF31002FDBDA /* PagedPokemons.swift */; };
 		C10D70E922FDD3E2002FDBDA /* PokemonSprites.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70E822FDD3E2002FDBDA /* PokemonSprites.swift */; };
+		C10D70EC22FE6FCD002FDBDA /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70EA22FE6FCC002FDBDA /* LoadingCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		C10D70E422FDCC50002FDBDA /* NamedAPIResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedAPIResource.swift; sourceTree = "<group>"; };
 		C10D70E622FDCF31002FDBDA /* PagedPokemons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedPokemons.swift; sourceTree = "<group>"; };
 		C10D70E822FDD3E2002FDBDA /* PokemonSprites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonSprites.swift; sourceTree = "<group>"; };
+		C10D70EA22FE6FCC002FDBDA /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoadingCell.swift; path = ../LoadingCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 			children = (
 				C10D70CB22F7B7CB002FDBDA /* PokemonTableViewController.swift */,
 				C10D70D322F7C8FC002FDBDA /* PokemonTableViewCell.swift */,
+				C10D70EA22FE6FCC002FDBDA /* LoadingCell.swift */,
 			);
 			path = PokemonsView;
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 				C10D70BA22F7B731002FDBDA /* AppDelegate.swift in Sources */,
 				C10D70D022F7C3E8002FDBDA /* Pokemon.swift in Sources */,
 				C10D70E722FDCF31002FDBDA /* PagedPokemons.swift in Sources */,
+				C10D70EC22FE6FCD002FDBDA /* LoadingCell.swift in Sources */,
 				C10D70D422F7C8FC002FDBDA /* PokemonTableViewCell.swift in Sources */,
 				C10D70E522FDCC51002FDBDA /* NamedAPIResource.swift in Sources */,
 				C10D70D222F7C4C6002FDBDA /* PokemonType.swift in Sources */,

@@ -69,12 +69,11 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
                 self.pokemons.sort(by: { (pokemon1, pokemon2) -> Bool in
                     return pokemon1.id < pokemon2.id
                 })
-//                let i = self.pokemons.firstIndex(of: pokemon)!
+                
                 count += 1
                 if count == 20 {
                     self.fetchingMore = false
                     DispatchQueue.main.sync {
-//                        self.tableView.insertRows(at: [IndexPath(row: i, section: 0)], with: .automatic)
                         self.tableView.reloadData()
                     }
                 }
@@ -82,22 +81,39 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
         })
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pokemons.count
+        if section == 0 {
+            return pokemons.count
+        } else if section == 1 && self.fetchingMore {
+            return 1
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath) as! PokemonTableViewCell
-        cell.resetCell()
-        
-        if let pokemon = try? pokemons[indexPath.row] {
-            cell.setup(pokemon: pokemon)
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath) as! PokemonTableViewCell
+            cell.resetCell()
+            
+            if indexPath.row < pokemons.count {
+                let pokemon = pokemons[indexPath.row]
+                cell.setup(pokemon: pokemon)
+            }
+            
+            return cell
+        } else  {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath) as! LoadingCell
+            cell.spinner.startAnimating()
+            return cell
         }
-        return cell
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -105,7 +121,7 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.height
         
-        if offsetY > contentHeight - frameHeight * 4 {
+        if offsetY > contentHeight - frameHeight * 6 {
             if !fetchingMore {
                 fetchMorePokemons()
             }
@@ -114,6 +130,7 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
     
     func fetchMorePokemons() {
         self.fetchingMore = true
+        tableView.reloadSections(IndexSet(integer: 1), with: .none)
         PokemonService.fetchPokemons(from: self.pagedPokemons?.next, completion: populatePokemons)
     }
 }
