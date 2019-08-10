@@ -28,9 +28,10 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
     
     @IBOutlet var tableView: UITableView!
     
-    var pokemons = [NamedAPIResource]()
+    var pokemons = [Pokemon]()
     var pagedPokemons: PagedPokemon?
     let endpoint = "https://pokeapi.co"
+    var fetchingMore = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,32 +39,10 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        // dados mockados
-//        pokemons.append(Pokemon(id: 1, name: "bulbasaur", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png", types: [PokemonType(name:  "poison"), PokemonType(name: "grass")]))
-//        pokemons.append(Pokemon(id: 2, name: "ivysaur", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png", types: [PokemonType(name:  "poison"), PokemonType(name: "grass")]))
-        
-        DispatchQueue.global(qos: .utility).async {
-            if let url = URL(string: "\(self.endpoint)/api/v2/pokemon/") {
-                URLSession.shared.dataTask(with: url) { (data, res, err) in
-                    let jsonDecoder = JSONDecoder()
-                    if let data = data {
-                        do {
-                            self.pagedPokemons = try jsonDecoder.decode(PagedPokemon.self, from: data)
-                            self.pokemons = self.pagedPokemons!.results
-                            DispatchQueue.main.async {
-                                self.tableView.reloadData()
-                            }
-                        } catch {
-                            print("Failed to load Pokemons")
-                        }
-                    }
-                }.resume()
-            }
+        if let url = URL(string: "\(self.endpoint)/api/v2/pokemon/") {
+            PokemonService.fetchPokemons(from: url, completion: populatePokemons)
         }
         
-        
-        self.title = "Poke"
-
         if let navController = navigationController {
             System.clearNavigationBar(forBar: navController.navigationBar)
             navController.view.backgroundColor = .clear
@@ -77,6 +56,32 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
         
     }
     
+    func populatePokemons(pagedPokemons: PagedPokemon?, err: Error?) {
+        self.pagedPokemons = pagedPokemons
+        var count = 0
+        self.pagedPokemons?.results.forEach({ (namedAPIResource) in
+            PokemonService.fetchPokemon(from: namedAPIResource.url, completion: { (pokemon, error) in
+                guard let pokemon = pokemon else {
+                    print("Erro ao bucar pokemon: \(error!)")
+                    return
+                }
+                self.pokemons.append(pokemon)
+                self.pokemons.sort(by: { (pokemon1, pokemon2) -> Bool in
+                    return pokemon1.id < pokemon2.id
+                })
+//                let i = self.pokemons.firstIndex(of: pokemon)!
+                count += 1
+                if count == 20 {
+                    self.fetchingMore = false
+                    DispatchQueue.main.sync {
+//                        self.tableView.insertRows(at: [IndexPath(row: i, section: 0)], with: .automatic)
+                        self.tableView.reloadData()
+                    }
+                }
+            })
+        })
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
@@ -87,27 +92,28 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath) as! PokemonTableViewCell
+        cell.resetCell()
         
-        let pokemon = pokemons[indexPath.row]
-        
-        cell.setup(namedAPIResource: pokemon)
-        
+        if let pokemon = try? pokemons[indexPath.row] {
+            cell.setup(pokemon: pokemon)
+        }
         return cell
     }
 
-    // header gradiente
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let header = UIView()
-//        header.bounds = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 5)
-//
-//        let gradientLayer = CAGradientLayer()
-//        gradientLayer.frame = header.bounds
-//        gradientLayer.colors = [UIColor(named: "Color1")!.cgColor, UIColor(named: "Color2")!.cgColor, UIColor(named: "Color3")!.cgColor, UIColor(named: "Color4")!.cgColor]
-//        gradientLayer.startPoint = CGPoint(x: 0.0, y: 1.0)
-//        gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
-//
-//        header.layer.addSublayer(gradientLayer)
-//        return header
-//    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.height
+        
+        if offsetY > contentHeight - frameHeight * 4 {
+            if !fetchingMore {
+                fetchMorePokemons()
+            }
+        }
+    }
     
+    func fetchMorePokemons() {
+        self.fetchingMore = true
+        PokemonService.fetchPokemons(from: self.pagedPokemons?.next, completion: populatePokemons)
+    }
 }

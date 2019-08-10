@@ -6,7 +6,7 @@
 //  Copyright © 2019 Felipe Treichel. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Pokemon: NSObject, Codable {
     
@@ -29,5 +29,7 @@ class Pokemon: NSObject, Codable {
         self.sprites = sprites
         self.types = types
     }
+    
+    
     
 }

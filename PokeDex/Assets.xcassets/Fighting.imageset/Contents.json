@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Fight.png",
+      "filename" : "Fighting.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Fight@2x.png",
+      "filename" : "Fighting@2x.png",
       "scale" : "2x"
     },
     {
