@@ -7,19 +7,6 @@
 //
 
 import UIKit
-struct System {
-    static func clearNavigationBar(forBar navBar: UINavigationBar) {
-        navBar.setBackgroundImage(UIImage(), for: .default)
-        navBar.shadowImage = UIImage()
-        navBar.isTranslucent = true
-    }
-    
-    static func clearTabBar(forBar tabBar: UITabBar) {
-        tabBar.backgroundImage = UIImage()
-        tabBar.shadowImage = UIImage()
-        tabBar.isTranslucent = true
-    }
-}
 
 class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UITableViewDelegate, UITableViewDataSource {
     func updateSearchResults(for searchController: UISearchController) {
@@ -32,6 +19,8 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
     var pagedPokemons: PagedPokemon?
     let endpoint = "https://pokeapi.co"
     var fetchingMore = false
+    var lastContentOffset: CGFloat = 0
+    var isMovingDown = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +28,8 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        if let url = URL(string: "\(self.endpoint)/api/v2/pokemon/") {
+        if let url = URL(string: "\(self.endpoint)/api/v2/pokemon/?offset=0&limit=50") {
+            self.fetchingMore = true
             PokemonService.fetchPokemons(from: url, completion: populatePokemons)
         }
         
@@ -71,10 +61,14 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
                 })
                 
                 count += 1
-                if count == 20 {
+                if count == 50 {
                     self.fetchingMore = false
                     DispatchQueue.main.sync {
-                        self.tableView.reloadData()
+                        UIView.performWithoutAnimation {
+                            self.tableView.reloadData()
+                            self.tableView.beginUpdates()
+                            self.tableView.endUpdates()
+                        }
                     }
                 }
             })
@@ -98,6 +92,14 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
         return 0
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 && self.isMovingDown {
+            let animation = AnimationFactory.makeSlideIn(duration: 0.2, delayFactor: 0.0)
+            let animator = Animator(animation: animation)
+            animator.animate(cell: cell, at: indexPath, in: tableView)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath) as! PokemonTableViewCell
@@ -117,15 +119,24 @@ class PokemonTableViewController: UIViewController, UISearchResultsUpdating, UIT
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (self.lastContentOffset < scrollView.contentOffset.y) {
+            self.isMovingDown = true;
+        } else {
+            self.isMovingDown = false;
+        }
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.height
         
-        if offsetY > contentHeight - frameHeight * 6 {
+        if offsetY > contentHeight - frameHeight * 4 {
             if !fetchingMore {
                 fetchMorePokemons()
             }
         }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.lastContentOffset = scrollView.contentOffset.y
     }
     
     func fetchMorePokemons() {

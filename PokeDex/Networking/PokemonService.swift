@@ -32,8 +32,9 @@ class PokemonService {
             if let url = url {
                 URLSession.shared.dataTask(with: url) { (data, res, err) in
                     if let err = err {
-                        print("API retornou erro: \(err)")
+                        print("API retornou erro: \(err.localizedDescription)")
                         completion(nil, err)
+                        return
                     }
                     let jsonDecoder = JSONDecoder()
                     if let data = data {
@@ -61,9 +62,7 @@ class PokemonService {
                                 print("Falha ao carregar a imagem do pokemon", error)
                                 completion(nil, error)
                             } else {
-                                DispatchQueue.main.sync {
-                                    pokemon.sprites.image = img
-                                }
+                                pokemon.sprites.image = img
                                 completion(pokemon, nil)
                             }
                         })

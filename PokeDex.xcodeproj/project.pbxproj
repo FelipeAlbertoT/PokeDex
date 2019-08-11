@@ -20,6 +20,10 @@
 		C10D70E722FDCF31002FDBDA /* PagedPokemons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70E622FDCF31002FDBDA /* PagedPokemons.swift */; };
 		C10D70E922FDD3E2002FDBDA /* PokemonSprites.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70E822FDD3E2002FDBDA /* PokemonSprites.swift */; };
 		C10D70EC22FE6FCD002FDBDA /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70EA22FE6FCC002FDBDA /* LoadingCell.swift */; };
+		C10D70EF22FF0A92002FDBDA /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70EE22FF0A92002FDBDA /* Animations.swift */; };
+		C10D70F122FF0AD4002FDBDA /* UITableView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70F022FF0AD4002FDBDA /* UITableView+Ext.swift */; };
+		C10D70F322FF0B14002FDBDA /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10D70F222FF0B14002FDBDA /* Animator.swift */; };
+		C1B954EE22FF280D0012CFDA /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B954ED22FF280D0012CFDA /* System.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +42,10 @@
 		C10D70E622FDCF31002FDBDA /* PagedPokemons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedPokemons.swift; sourceTree = "<group>"; };
 		C10D70E822FDD3E2002FDBDA /* PokemonSprites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonSprites.swift; sourceTree = "<group>"; };
 		C10D70EA22FE6FCC002FDBDA /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoadingCell.swift; path = ../LoadingCell.swift; sourceTree = "<group>"; };
+		C10D70EE22FF0A92002FDBDA /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
+		C10D70F022FF0AD4002FDBDA /* UITableView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Ext.swift"; sourceTree = "<group>"; };
+		C10D70F222FF0B14002FDBDA /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		C1B954ED22FF280D0012CFDA /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +78,8 @@
 		C10D70B822F7B731002FDBDA /* PokeDex */ = {
 			isa = PBXGroup;
 			children = (
+				C1B954EF22FF28270012CFDA /* Animations */,
+				C10D70F422FF27B3002FDBDA /* Extensions */,
 				C10D70D522F8AD1D002FDBDA /* Networking */,
 				C10D70CE22F7C3D9002FDBDA /* Model */,
 				C10D70CD22F7B7D2002FDBDA /* PokemonsView */,
@@ -110,6 +120,24 @@
 				C10D70E222F8B459002FDBDA /* PokemonService.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		C10D70F422FF27B3002FDBDA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C1B954ED22FF280D0012CFDA /* System.swift */,
+				C10D70F022FF0AD4002FDBDA /* UITableView+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C1B954EF22FF28270012CFDA /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				C10D70EE22FF0A92002FDBDA /* Animations.swift */,
+				C10D70F222FF0B14002FDBDA /* Animator.swift */,
+			);
+			path = Animations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,8 +218,12 @@
 				C10D70EC22FE6FCD002FDBDA /* LoadingCell.swift in Sources */,
 				C10D70D422F7C8FC002FDBDA /* PokemonTableViewCell.swift in Sources */,
 				C10D70E522FDCC51002FDBDA /* NamedAPIResource.swift in Sources */,
+				C10D70F322FF0B14002FDBDA /* Animator.swift in Sources */,
+				C1B954EE22FF280D0012CFDA /* System.swift in Sources */,
 				C10D70D222F7C4C6002FDBDA /* PokemonType.swift in Sources */,
 				C10D70E322F8B459002FDBDA /* PokemonService.swift in Sources */,
+				C10D70F122FF0AD4002FDBDA /* UITableView+Ext.swift in Sources */,
+				C10D70EF22FF0A92002FDBDA /* Animations.swift in Sources */,
 				C10D70E922FDD3E2002FDBDA /* PokemonSprites.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
